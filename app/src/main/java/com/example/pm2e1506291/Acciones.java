@@ -85,7 +85,7 @@ public class Acciones extends AppCompatActivity {
                 builder.setMessage("Desea realizar la llamada al numero " + numeros + "?")
                         .setTitle("Confirmar llamada");
 
-                builder.setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("\uD83D\uDCDE Llamar ahora", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (ActivityCompat.checkSelfPermission(Acciones.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
@@ -97,7 +97,7 @@ public class Acciones extends AppCompatActivity {
                     }
                 });
 
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("✖ Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
