@@ -1,5 +1,7 @@
 package com.example.pm2e1506291;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -39,7 +41,7 @@ public class Acciones extends AppCompatActivity {
     ContactosRepository contactosRepository = new ContactosRepository(this);
     private ImageView imagen;
     private String imagenBit;
-    private Button camara, galeria, compartir, actualizar, eliminar, llamar;
+    private Button camara, galeria, compartir, actualizar, eliminar, llamar, sinimagen;
     private EditText nombre, numero, nota;
     private ImageView imagenContacto;
     private Spinner spinner;
@@ -51,6 +53,8 @@ public class Acciones extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_acciones);
+
+
 
         // Inicializar vistas
         camara = findViewById(R.id.button6);
@@ -64,51 +68,46 @@ public class Acciones extends AppCompatActivity {
         nota = findViewById(R.id.editTextTextMultiLine2);
         imagenContacto = findViewById(R.id.ivContactoLista2);
         spinner = findViewById(R.id.spinner2);
+        sinimagen = findViewById(R.id.button11);
+
+        sinimagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagenContacto.setImageResource(R.drawable.round_account_circle_24);
+                imagenBit="1";
+            }
+        });
 
         llamar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String numeros = numero.getText().toString();
-                if (ActivityCompat.checkSelfPermission(Acciones.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + numeros));
-                    startActivity(intent);
-                }
-            }
-        });
 
-        actualizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (nombre.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.vacionombre), Toast.LENGTH_SHORT).show();
-                } else if (numero.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
-                } else {
-                    contactosRepository.UpdateContact(
-                            idContacto,  // ID del contacto que se está editando
-                            nombre.getText().toString(),
-                            numero.getText().toString(),
-                            nota.getText().toString(),
-                            idpaisSeleccionado,
-                            imagenBit
-                    );
-                }
-            }
-        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(Acciones.this);
+                builder.setMessage("Desea realizar la llamada al numero " + numeros + "?")
+                        .setTitle("Confirmar llamada");
 
-        eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (idContacto != -1) { // Verificar que el contacto es válido
-                    contactosRepository.deleteContact(idContacto);
-                    Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
-                    finish(); // Cerrar la actividad después de eliminar
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
-                }
+                builder.setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (ActivityCompat.checkSelfPermission(Acciones.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
+                        } else {
+                            Intent intent = new Intent(Intent.ACTION_CALL);
+                            intent.setData(Uri.parse("tel:" + numeros));
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -154,7 +153,12 @@ public class Acciones extends AppCompatActivity {
 
                 // Si tienes una imagen en Base64, la conviertes a Bitmap y la muestras en un ImageView
                 if (contacto.getImagen() != null) {
-                    imagenContacto.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
+                    if(contacto.getImagen() == "1"){
+                        imagenContacto.setImageResource(R.drawable.round_account_circle_24);
+                    }else{
+                        imagenContacto.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
+                        imagenBit = contacto.getImagen();
+                    }
                 }
             }
         } else {
@@ -194,6 +198,75 @@ public class Acciones extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // No hacer nada
+            }
+        });
+        actualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Acciones.this);
+                builder.setMessage("Desea ACTUALIZAR este contacto?")
+                        .setTitle("Confirmar Modificacion");
+
+                builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        int contactoId = getIntent().getIntExtra("contacto_id", -1);
+                        if (nombre.getText().toString().trim().isEmpty()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.vacionombre), Toast.LENGTH_SHORT).show();
+                        } else if (numero.getText().toString().trim().isEmpty()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
+                        } else {
+                            contactosRepository.UpdateContact(contactoId, nombre.getText().toString(), numero.getText().toString(), nota.getText().toString(), idpaisSeleccionado, imagenBit);
+                            Intent intent = new Intent(getApplicationContext(),Lista.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Acciones.this);
+                builder.setMessage("Desea ELIMINAR este contacto?")
+                        .setTitle("Confirmar Eliminacion");
+
+                builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        int contactoId = getIntent().getIntExtra("contacto_id", -1);
+                        if (contactoId != -1) { // Verificar que el contacto es válido
+                            contactosRepository.deleteContact(contactoId);
+                            Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),Lista.class);
+                            startActivity(intent);
+                            finish(); // Cerrar la actividad después de eliminar
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 

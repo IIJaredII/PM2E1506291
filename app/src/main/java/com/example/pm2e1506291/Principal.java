@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class Principal extends AppCompatActivity {
 
     private ImageView imagen;
-    private Button btnGaleria, btnCamara, btnIngresar;
+    private Button btnGaleria, btnCamara, btnIngresar, btnLista;
     private String imagenBit;
 
     private EditText nombre, numero, notas;
@@ -44,13 +44,17 @@ public class Principal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         ContactosRepository contactosRepository = new ContactosRepository(this);
+
         btnCamara = findViewById(R.id.button3);
         btnGaleria = findViewById(R.id.button4);
         btnIngresar = findViewById(R.id.button2);
+        btnLista = findViewById(R.id.button);
         nombre = findViewById(R.id.editTextText);
         numero = findViewById(R.id.editTextPhone);
         notas = findViewById(R.id.editTextTextMultiLine);
         imagen = findViewById(R.id.ivContactoLista);
+
+        imagen.setImageResource(R.drawable.ic_android_black_24dp);
 
         // Spinner de países
         PaisesRepository paisesRepository = new PaisesRepository(this);
@@ -89,6 +93,9 @@ public class Principal extends AppCompatActivity {
                 } else if (numero.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
                 } else {
+                    if(imagenBit==null){
+                        imagenBit="1";
+                    }
                     contactosRepository.AddContact(nombre.getText().toString(), numero.getText().toString(), notas.getText().toString(), idPais[0], imagenBit);
                 }
             }
@@ -105,6 +112,14 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AbrirGaleria();
+            }
+        });
+
+        btnLista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Lista.class);
+                startActivity(intent);
             }
         });
 
@@ -149,6 +164,7 @@ public class Principal extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(Principal.this, R.string.imagenusuario, Toast.LENGTH_SHORT).show();
+
                 }
             }
     );
@@ -161,6 +177,9 @@ public class Principal extends AppCompatActivity {
             Bitmap bitmap = (Bitmap) extras.get("data");
             imagen.setImageBitmap(bitmap);
             imagenBit = imageUtils.encodeToBase64(bitmap);
+        }else{
+            imagen.setImageResource(R.drawable.ic_android_black_24dp);
+            imagenBit="1";
         }
     }
 }
