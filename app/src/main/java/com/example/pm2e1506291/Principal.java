@@ -54,7 +54,7 @@ public class Principal extends AppCompatActivity {
         notas = findViewById(R.id.editTextTextMultiLine);
         imagen = findViewById(R.id.ivContactoLista);
 
-        imagen.setImageResource(R.drawable.ic_android_black_24dp);
+        imagen.setImageResource(R.drawable.round_account_circle_24);
 
         // Spinner de países
         PaisesRepository paisesRepository = new PaisesRepository(this);
@@ -178,7 +178,7 @@ public class Principal extends AppCompatActivity {
             imagen.setImageBitmap(bitmap);
             imagenBit = imageUtils.encodeToBase64(bitmap);
         }else{
-            imagen.setImageResource(R.drawable.ic_android_black_24dp);
+            imagen.setImageResource(R.drawable.round_account_circle_24);
             imagenBit="1";
         }
     }
