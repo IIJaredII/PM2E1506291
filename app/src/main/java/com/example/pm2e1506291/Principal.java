@@ -37,7 +37,7 @@ public class Principal extends AppCompatActivity {
     private String imagenBit;
 
     private EditText nombre, numero, notas;
-    private int idpais; //No se ha ingresado
+    private int idpais;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,10 +148,9 @@ public class Principal extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    Uri uri = result.getData().getData(); // Obtener la URI de la imagen seleccionada
+                    Uri uri = result.getData().getData();
                     if (uri != null) {
                         try {
-                            // Convertir la URI en un Bitmap
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                             imagen.setImageBitmap(bitmap);
                             imagenBit = imageUtils.encodeToBase64(bitmap);
@@ -163,8 +162,8 @@ public class Principal extends AppCompatActivity {
                         Toast.makeText(Principal.this, R.string.imagenerror, Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    imagenBit = "1";
                     Toast.makeText(Principal.this, R.string.imagenusuario, Toast.LENGTH_SHORT).show();
-
                 }
             }
     );
