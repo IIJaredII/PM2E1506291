@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,7 +37,7 @@ public class Principal extends AppCompatActivity {
     private String imagenBit;
 
     private EditText nombre, numero, notas;
-    private int longitud; //No se ha ingresado
+    private int idpais; //No se ha ingresado
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +76,6 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 idPais[0] = paises.get(position).getId();
-                longitud=paises.get(position).getLongitud();
                 Toast.makeText(getApplicationContext(), "País seleccionado: " + paises.get(position).getNombre() + ", ID: " + idPais[0], Toast.LENGTH_SHORT).show();
             }
 
@@ -124,28 +121,6 @@ public class Principal extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),Lista.class);
                 startActivity(intent);
             }
-        });
-
-
-        numero.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > longitud){
-                    Toast.makeText(Principal.this, "Longitud maxima alcanzada", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-           @Override
-            public void afterTextChanged(Editable s) {
-               if (s.length() > longitud) {
-                   s.delete(longitud, s.length());
-               }
-           }
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
