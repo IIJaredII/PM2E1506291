@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -20,11 +21,12 @@ import com.example.pm2e1506291.Repository.ContactosRepository;
 
 import java.util.ArrayList;
 
-public class Lista extends AppCompatActivity {
+public class Lista extends AppCompatActivity implements  SearchView.OnQueryTextListener {
     ContactosRepository contactosRepository = new ContactosRepository(this);
     RecyclerView listaContactos;
     ArrayList<ContactosModel> arrayListContactos;
     listaContactosAdapter adapter;
+   SearchView txtbuscar;
 
     ImageButton btnOrdenarLista;
     int ordenActual = 1; // Estado inicial (1 o 2)
@@ -35,6 +37,8 @@ public class Lista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_lista);
+
+        txtbuscar = findViewById(R.id.txtbuscar);
 
         listaContactos = findViewById(R.id.listaContactos);
         listaContactos.setLayoutManager(new LinearLayoutManager(this));
@@ -68,6 +72,19 @@ public class Lista extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    txtbuscar.setOnQueryTextListener(this);
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filtrado(newText);
+        return false;
     }
 
     private void cargarLista(int orden) {
