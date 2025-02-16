@@ -33,15 +33,15 @@ public class ContactosRepository {
 
         if(cursor.moveToFirst()){
             do{
-            contactos = new ContactosModel();
-            contactos.setId(cursor.getInt(0));
-            contactos.setNombre(cursor.getString(1));
-            contactos.setIdpais(cursor.getInt(2));
-            contactos.setNumero(cursor.getString(3));
-            contactos.setNota(cursor.getString(5));
-            contactos.setImagen(cursor.getString(5));
-            contactos.setFechacreacion(cursor.getString(6));
-            listaContactos.add(contactos);
+                contactos = new ContactosModel();
+                contactos.setId(cursor.getInt(0));
+                contactos.setNombre(cursor.getString(1));
+                contactos.setIdpais(cursor.getInt(2));
+                contactos.setNumero(cursor.getString(3));
+                contactos.setNota(cursor.getString(5));
+                contactos.setImagen(cursor.getString(5));
+                contactos.setFechacreacion(cursor.getString(6));
+                listaContactos.add(contactos);
             }while(cursor.moveToNext());
         }
         cursor.close();
