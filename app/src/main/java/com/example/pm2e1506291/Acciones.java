@@ -39,7 +39,6 @@ import java.util.ArrayList;
 public class Acciones extends AppCompatActivity {
     private int idpaisSeleccionado, idContacto;
     ContactosRepository contactosRepository = new ContactosRepository(this);
-    private ImageView imagen;
     private String imagenBit;
     private Button camara, galeria, compartir, actualizar, eliminar, llamar, sinimagen;
     private EditText nombre, numero, nota;
@@ -53,8 +52,6 @@ public class Acciones extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_acciones);
-
-
 
         // Inicializar vistas
         camara = findViewById(R.id.button6);
@@ -300,7 +297,7 @@ public class Acciones extends AppCompatActivity {
                         try {
                             // Convertir la URI en un Bitmap
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            imagen.setImageBitmap(bitmap);
+                            imagenContacto.setImageBitmap(bitmap);
                             imagenBit = imageUtils.encodeToBase64(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -322,7 +319,7 @@ public class Acciones extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap bitmap = (Bitmap) extras.get("data");
-            imagen.setImageBitmap(bitmap);
+            imagenContacto.setImageBitmap(bitmap);
             imagenBit = imageUtils.encodeToBase64(bitmap);
         }
     }
