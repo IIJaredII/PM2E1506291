@@ -163,6 +163,7 @@ public class Principal extends AppCompatActivity {
                         Toast.makeText(Principal.this, R.string.imagenerror, Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    imagenBit = "1";
                     Toast.makeText(Principal.this, R.string.imagenusuario, Toast.LENGTH_SHORT).show();
 
                 }
@@ -177,9 +178,6 @@ public class Principal extends AppCompatActivity {
             Bitmap bitmap = (Bitmap) extras.get("data");
             imagen.setImageBitmap(bitmap);
             imagenBit = imageUtils.encodeToBase64(bitmap);
-        }else{
-            imagen.setImageResource(R.drawable.round_account_circle_24);
-            imagenBit="1";
         }
     }
 }
