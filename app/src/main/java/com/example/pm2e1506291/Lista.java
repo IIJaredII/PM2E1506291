@@ -1,6 +1,7 @@
 package com.example.pm2e1506291;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,15 +22,18 @@ public class Lista extends AppCompatActivity {
     RecyclerView listaContactos;
     ArrayList<ContactosModel> arrayListContactos;
     listaContactosAdapter adapter;
+
+    Button btnOrdenarLista;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_lista);
 
+
         listaContactos = findViewById(R.id.listaContactos);
         listaContactos.setLayoutManager(new LinearLayoutManager(this));
-        arrayListContactos = contactosRepository.mostrarContactsos();
+        arrayListContactos = contactosRepository.mostrarContactsos(1);
         adapter = new listaContactosAdapter(this,arrayListContactos);
         listaContactos.setAdapter(adapter);
 
