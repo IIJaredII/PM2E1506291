@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,6 +48,7 @@ public class Acciones extends AppCompatActivity {
     private Spinner spinner;
     private ArrayList<PaisesModel> paisesList;
     private PaisesRepository paisesRepository;
+    private int longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +191,7 @@ public class Acciones extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 idpaisSeleccionado = paisesList.get(position).getId();
+                longitud = paisesList.get(position).getLongitud();
                 Toast.makeText(getApplicationContext(), "País seleccionado: " + paisesList.get(position).getNombre(), Toast.LENGTH_SHORT).show();
             }
 
@@ -263,6 +267,26 @@ public class Acciones extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        numero.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() >= longitud) {
+                    Toast.makeText(Acciones.this, "Longitud máxima alcanzada", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > longitud) {
+                    s.delete(longitud, s.length());
+                }
             }
         });
 
