@@ -2,6 +2,7 @@ package com.example.pm2e1506291;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +18,12 @@ import com.example.pm2e1506291.Repository.ContactosRepository;
 
 import java.util.ArrayList;
 
-public class Lista extends AppCompatActivity {
+public class Lista extends AppCompatActivity implements  SearchView.OnQueryTextListener {
     ContactosRepository contactosRepository = new ContactosRepository(this);
     RecyclerView listaContactos;
     ArrayList<ContactosModel> arrayListContactos;
     listaContactosAdapter adapter;
+   SearchView txtbuscar;
 
     Button btnOrdenarLista;
     @Override
@@ -30,7 +32,7 @@ public class Lista extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_lista);
 
-
+        txtbuscar = findViewById(R.id.txtbuscar);
         listaContactos = findViewById(R.id.listaContactos);
         listaContactos.setLayoutManager(new LinearLayoutManager(this));
         arrayListContactos = contactosRepository.mostrarContactsos(1);
@@ -42,5 +44,18 @@ public class Lista extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    txtbuscar.setOnQueryTextListener(this);
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filtrado(newText);
+        return false;
     }
 }

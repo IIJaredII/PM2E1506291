@@ -12,11 +12,11 @@
         android:layout_width="411dp"
         android:layout_height="678dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintTop_toBottomOf="@+id/txtbuscar"
         tools:layout_editor_absoluteX="-1dp" />
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/txtbuscar"
         android:layout_width="350dp"
         android:layout_height="51dp"
         app:layout_constraintEnd_toStartOf="@+id/btnOrdenar"
