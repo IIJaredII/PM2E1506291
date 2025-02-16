@@ -151,7 +151,6 @@ public class Acciones extends AppCompatActivity {
                 numero.setText(contacto.getNumero());
                 nota.setText(contacto.getNota());
 
-                // Si tienes una imagen en Base64, la conviertes a Bitmap y la muestras en un ImageView
                 if (contacto.getImagen() != null) {
                     if(contacto.getImagen() == "1"){
                         imagenContacto.setImageResource(R.drawable.round_account_circle_24);
@@ -311,6 +310,7 @@ public class Acciones extends AppCompatActivity {
                         Toast.makeText(Acciones.this, R.string.imagenerror, Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    imagenBit = "1";
                     Toast.makeText(Acciones.this, R.string.imagenusuario, Toast.LENGTH_SHORT).show();
                 }
             }

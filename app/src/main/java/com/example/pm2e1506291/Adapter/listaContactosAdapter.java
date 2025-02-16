@@ -46,7 +46,7 @@ public class listaContactosAdapter extends RecyclerView.Adapter<listaContactosAd
         holder.txtNombre.setText(contacto.getNombre());
         String codigo = PaisesRepository.obtenerCodigoPorId(contacto.getIdpais());
         holder.txtTelefono.setText("("+codigo+") "+contacto.getNumero());
-        if(contacto.getImagen()=="1"){
+        if(contacto.getImagen().equals("1")){
             holder.imageviwe.setImageResource(R.drawable.round_account_circle_24);
         }else{
             holder.imageviwe.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
