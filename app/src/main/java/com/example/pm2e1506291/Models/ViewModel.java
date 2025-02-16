@@ -16,6 +16,14 @@ public class ViewModel extends AndroidViewModel {
     private LiveData<List<ContactosModel>> contactosList;
 
     public ViewModel(@NonNull Application application) {
+
         super(application);
+
+        contactosRepository = new ContactosRepository(application);
+        contactosList = contactosRepository.getContactosLiveData();
+    }
+
+    public LiveData<List<ContactosModel>> getContactosList() {
+        return contactosList;
     }
 }

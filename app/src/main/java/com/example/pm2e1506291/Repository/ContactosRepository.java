@@ -7,18 +7,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.pm2e1506291.DAO.ContactosDao;
+import com.example.pm2e1506291.Lista;
 import com.example.pm2e1506291.Models.ContactosModel;
 import com.example.pm2e1506291.configuracion.ContactosContract;
 import com.example.pm2e1506291.configuracion.SQLiteConexion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactosRepository {
     Context context;
 
     public ContactosRepository(Context context) {
         this.context = context;
+    }
+
+    public LiveData<List<ContactosModel>> getContactosLiveData(){
+        LiveData<List<ContactosModel>> contactosreal;
+
+        return contactosreal;
     }
 
     public ArrayList<ContactosModel> mostrarContactsos(int i){

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pm2e1506291.Acciones;
@@ -19,36 +20,41 @@ import com.example.pm2e1506291.R;
 import com.example.pm2e1506291.Repository.PaisesRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class listaContactosAdapter extends RecyclerView.Adapter<listaContactosAdapter.ViewHolder> {
 
     private Context context;
     private PaisesRepository paises;
-    private ArrayList<ContactosModel> listaContactos;
+    private List<ContactosModel> listaContactos = new ArrayList<>();
 
-    public listaContactosAdapter(Context context, ArrayList<ContactosModel> listaContactos) {
+    public listaContactosAdapter(Context context) {
         this.context = context;
-        this.listaContactos = listaContactos;
         this.paises = new PaisesRepository(context);
+    }
+
+    public void setContactos(List<ContactosModel> contactos) {
+        this.listaContactos = contactos;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public listaContactosAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_contacto,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_contacto, parent, false);
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ContactosModel contacto = listaContactos.get(position);
         holder.txtNombre.setText(contacto.getNombre());
         String codigo = PaisesRepository.obtenerCodigoPorId(contacto.getIdpais());
-        holder.txtTelefono.setText("("+codigo+") "+contacto.getNumero());
-        if(contacto.getImagen().equals("1")){
+        holder.txtTelefono.setText("(" + codigo + ") " + contacto.getNumero());
+
+        if (contacto.getImagen().equals("1")) {
             holder.imageviwe.setImageResource(R.drawable.round_account_circle_24);
-        }else{
+        } else {
             holder.imageviwe.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
         }
 

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +17,12 @@ import com.example.pm2e1506291.Models.ContactosModel;
 import com.example.pm2e1506291.Repository.ContactosRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Lista extends AppCompatActivity {
     ContactosRepository contactosRepository = new ContactosRepository(this);
     RecyclerView listaContactos;
-    ArrayList<ContactosModel> arrayListContactos;
+    LiveData<List<ContactosModel>> arrayListContactos;
     listaContactosAdapter adapter;
 
     Button btnOrdenarLista;
