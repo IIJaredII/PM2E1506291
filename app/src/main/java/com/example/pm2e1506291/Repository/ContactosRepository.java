@@ -21,15 +21,24 @@ public class ContactosRepository {
         this.context = context;
     }
 
-    public ArrayList<ContactosModel> mostrarContactsos(){
+    public ArrayList<ContactosModel> mostrarContactsos(int i){
         SQLiteConexion conexion = new SQLiteConexion(context);
 
         SQLiteDatabase db = conexion.getWritableDatabase();
         ArrayList<ContactosModel> listaContactos = new ArrayList<>();
         ContactosModel contactos=null;
-        Cursor cursor;
+        Cursor cursor = null;
 
-        cursor=db.rawQuery(ContactosDao.SELECT_ALL,null);
+        switch (i){
+            case 1:
+                cursor=db.rawQuery(ContactosDao.SELECT_ALL_ALFABETICO,null);
+                break;
+            case 2:
+                cursor=db.rawQuery(ContactosDao.SELECT_ALL_FECHA_CREACION,null);
+                break;
+            default:
+                cursor=db.rawQuery(ContactosDao.SELECT_ALL,null);
+        }
 
         if(cursor.moveToFirst()){
             do{
