@@ -65,7 +65,7 @@ public class Principal extends AppCompatActivity {
         ArrayList<String> nombresPaises = new ArrayList<>();
 
         for (PaisesModel pais : paises) {
-            nombresPaises.add(pais.getNombre());
+            nombresPaises.add(pais.getNombre()+" ("+pais.getCodigo()+")");
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nombresPaises);
